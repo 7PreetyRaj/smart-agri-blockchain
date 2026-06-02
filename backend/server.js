@@ -4,6 +4,7 @@ const express = require("express");
 
 // Create application
 const app = express();
+app.use(express.json());
 
 // Port number
 const PORT = 5000;

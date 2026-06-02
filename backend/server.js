@@ -1,7 +1,9 @@
+require("dotenv").config();
 const sensorRoutes = require("./routes/sensorRoutes");
 // Express package import
 const express = require("express");
-
+const connectDB = require("./config/db");
+connectDB();
 // Create application
 const app = express();
 app.use(express.json());

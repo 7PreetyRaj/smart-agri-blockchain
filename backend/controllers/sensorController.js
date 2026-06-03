@@ -64,17 +64,20 @@ const submitSensorData = async (req, res) => {
 
         }
 
-        // Save valid data into MongoDB
-        const savedData =
-            await SensorData.create(sensorData);
+        // Save data into blockchain first
+const transactionHash =
+    await saveToBlockchain(
+        sensorData.temperature,
+        sensorData.humidity,
+        sensorData.soilMoisture
+    );
 
-        // Save same data into blockchain
-        const transactionHash =
-            await saveToBlockchain(
-                sensorData.temperature,
-                sensorData.humidity,
-                sensorData.soilMoisture
-            );
+// Save data into MongoDB with blockchain proof
+const savedData =
+    await SensorData.create({
+        ...sensorData,
+        transactionHash
+    });
 
         // Send success response
         res.status(201).json({

@@ -2,7 +2,15 @@ import React, {
     useEffect,
     useState
 } from "react";
-
+import {
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend
+} from "recharts";
 import API from "../services/api";
 
 function SensorDashboard() {
@@ -52,10 +60,23 @@ const avgHumidity =
                 await API.get(
                     "/blockchain/records"
                 );
+                const formattedData =
+    response.data.map(
+        (
+            record,
+            index
+        ) => ({
+            ...record,
+            label:
+                `Record ${index + 1}`
+        })
+    );
+
+
 
             setRecords(
-                response.data
-            );
+    formattedData
+);
 
         } catch (error) {
 
@@ -87,8 +108,70 @@ const avgHumidity =
         <h3>Avg Humidity</h3>
         <p>{avgHumidity} %</p>
     </div>
+    <div className="card">
+    <h3>Blockchain Status</h3>
+    <p>Connected</p>
+    </div>
 
 </div>
+<h2>Temperature Trend</h2>
+
+<LineChart
+    width={900}
+    height={300}
+    data={records}
+>
+    <CartesianGrid strokeDasharray="3 3" />
+    <XAxis dataKey="label" />
+    <YAxis />
+    <Tooltip />
+    <Legend />
+
+    <Line
+        type="monotone"
+        dataKey="temperature"
+    />
+</LineChart>
+
+
+<h2>Humidity Trend</h2>
+
+<LineChart
+    width={900}
+    height={300}
+    data={records}
+>
+    <CartesianGrid strokeDasharray="3 3" />
+    <XAxis dataKey="label" />
+    <YAxis />
+    <Tooltip />
+    <Legend />
+
+    <Line
+        type="monotone"
+        dataKey="humidity"
+    />
+</LineChart>
+
+
+<h2>Soil Moisture Trend</h2>
+
+<LineChart
+    width={900}
+    height={300}
+    data={records}
+>
+    <CartesianGrid strokeDasharray="3 3" />
+    <XAxis dataKey="label" />
+    <YAxis />
+    <Tooltip />
+    <Legend />
+
+    <Line
+        type="monotone"
+        dataKey="soilMoisture"
+    />
+</LineChart>
 
 
             <h2>

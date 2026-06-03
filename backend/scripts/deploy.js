@@ -1,4 +1,4 @@
-import hre from "hardhat";
+const hre = require("hardhat");
 
 async function main() {
 
@@ -6,12 +6,17 @@ async function main() {
 
     const agriData = await AgriData.deploy();
 
-    await agriData.waitForDeployment();
+    await agriData.deployed();
 
-    console.log("AgriData deployed to:", await agriData.getAddress());
+    console.log(
+        "AgriData deployed to:",
+        agriData.address
+    );
 }
 
-main().catch((error) => {
-    console.error(error);
-    process.exitCode = 1;
-});
+main()
+    .then(() => process.exit(0))
+    .catch((error) => {
+        console.error(error);
+        process.exit(1);
+    });

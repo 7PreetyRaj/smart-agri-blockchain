@@ -1,15 +1,20 @@
 // Import ethers library
 const { ethers } = require("ethers");
 
-// Smart Contract Address
-const CONTRACT_ADDRESS =
-    "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+
 
 // Contract ABI
 // Sirf wahi functions rakhe hain jo use karenge
 const CONTRACT_ABI = [
+
+    // Add new sensor record
     "function addRecord(uint256,uint256,uint256) public",
-    "function getRecordCount() view returns(uint256)"
+
+    // Total records stored
+    "function getRecordCount() view returns(uint256)",
+
+    // Read record by index
+    "function getRecord(uint256) view returns(uint256,uint256,uint256,uint256)"
 ];
 
 // Function to save data into blockchain
@@ -78,7 +83,93 @@ const saveToBlockchain = async (
         return null;
     }
 };
+// Get total blockchain records
+const getBlockchainRecordCount = async () => {
+
+    try {
+
+        const provider =
+            new ethers.providers.JsonRpcProvider(
+                "http://127.0.0.1:8545"
+            );
+
+        const contract =
+            new ethers.Contract(
+                process.env.CONTRACT_ADDRESS,
+                CONTRACT_ABI,
+                provider
+            );
+
+        const count =
+            await contract.getRecordCount();
+
+        return Number(count);
+
+    } catch (error) {
+
+        console.error(error.message);
+
+        return 0;
+    }
+};
+
+
+// Get all records from blockchain
+const getAllBlockchainRecords = async () => {
+
+    try {
+
+        const provider =
+            new ethers.providers.JsonRpcProvider(
+                "http://127.0.0.1:8545"
+            );
+
+        const contract =
+            new ethers.Contract(
+                process.env.CONTRACT_ADDRESS,
+                CONTRACT_ABI,
+                provider
+            );
+
+        const count =
+            await contract.getRecordCount();
+
+        const records = [];
+
+        for (let i = 0; i < count; i++) {
+
+            const record =
+                await contract.getRecord(i);
+
+            records.push({
+
+                temperature:
+                    Number(record[0]),
+
+                humidity:
+                    Number(record[1]),
+
+                soilMoisture:
+                    Number(record[2]),
+
+                timestamp:
+                    Number(record[3])
+
+            });
+        }
+
+        return records;
+
+    } catch (error) {
+
+        console.error(error.message);
+
+        return [];
+    }
+};
 
 module.exports = {
-    saveToBlockchain
+    saveToBlockchain,
+    getBlockchainRecordCount,
+    getAllBlockchainRecords
 };

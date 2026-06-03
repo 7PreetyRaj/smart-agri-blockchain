@@ -35,4 +35,24 @@ contract AgriData {
     {
         return records.length;
     }
+    //read data from fun blockchain
+    function getRecord(uint256 index)
+    public
+    view
+    returns (
+        uint256 temperature,
+        uint256 humidity,
+        uint256 soilMoisture,
+        uint256 timestamp
+    )
+{
+    SensorRecord memory record = records[index];
+
+    return (
+        record.temperature,
+        record.humidity,
+        record.soilMoisture,
+        record.timestamp
+    );
+}
 }

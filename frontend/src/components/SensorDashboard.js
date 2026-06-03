@@ -71,6 +71,22 @@ const avgHumidity =
                 `Record ${index + 1}`
         })
     );
+    const generateData = async () => {
+
+    try {
+
+        await API.post(
+            "/generate-data"
+        );
+
+        fetchRecords();
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+};
 
 
 
@@ -114,6 +130,11 @@ const avgHumidity =
     </div>
 
 </div>
+<button
+    onClick={generateData}
+>
+    Generate Sensor Data
+</button>
 <h2>Temperature Trend</h2>
 
 <LineChart

@@ -1,3 +1,6 @@
+const {
+    saveToBlockchain
+} = require("../services/blockchainService");
 const SensorData = require("../models/SensorData");
 const {
     validateSensorData,
@@ -30,43 +33,71 @@ const submitSensorData = async (req, res) => {
 
     try {
 
+        // Data received from API request
         const sensorData = req.body;
 
-        const isValid = validateSensorData(sensorData);
+        // AI validation check
+        const isValid =
+            validateSensorData(sensorData);
 
-        const isDuplicate = isDuplicateData(sensorData);
+        // Duplicate data check
+        const isDuplicate =
+            isDuplicateData(sensorData);
 
-        // Invalid data
+        // Reject invalid data
         if (!isValid) {
+
             return res.status(400).json({
                 message: "Invalid Sensor Data",
                 valid: false
             });
+
         }
 
-        // Duplicate data
+        // Skip duplicate data
         if (isDuplicate) {
+
             return res.status(200).json({
                 message: "Duplicate Data Skipped",
                 duplicate: true
             });
+
         }
 
-        // Save to MongoDB
-        const savedData = await SensorData.create(sensorData);
+        // Save valid data into MongoDB
+        const savedData =
+            await SensorData.create(sensorData);
 
+        // Save same data into blockchain
+        const transactionHash =
+            await saveToBlockchain(
+                sensorData.temperature,
+                sensorData.humidity,
+                sensorData.soilMoisture
+            );
+
+        // Send success response
         res.status(201).json({
-            message: "Sensor Data Saved",
+
+            message:
+                "Sensor Data Saved To MongoDB And Blockchain",
+
+            transactionHash,
+
             data: savedData
+
         });
 
     } catch (error) {
 
         res.status(500).json({
+
             message: error.message
+
         });
 
     }
+
 };
 module.exports = {
     getSensorData,

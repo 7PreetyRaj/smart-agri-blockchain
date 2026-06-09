@@ -132,7 +132,11 @@ const getAllBlockchainRecords = async () => {
             );
 
         const count =
-            await contract.getRecordCount();
+    (await contract.getRecordCount()).toNumber();
+    //console.log("Contract Address:", process.env.CONTRACT_ADDRESS);
+//console.log("Record Count:", count);
+
+    //console.log("Record Count:", count);
 
         const records = [];
 
@@ -140,7 +144,7 @@ const getAllBlockchainRecords = async () => {
 
             const record =
                 await contract.getRecord(i);
-
+    console.log("Reading Record:", i);
             records.push({
 
                 temperature:

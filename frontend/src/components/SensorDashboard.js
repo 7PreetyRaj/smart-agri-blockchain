@@ -60,6 +60,10 @@ const avgHumidity =
                 await API.get(
                     "/blockchain/records"
                 );
+                console.log(
+    "Fetched Records:",
+    response.data
+);
                 const formattedData =
     response.data.map(
         (
@@ -90,12 +94,15 @@ const avgHumidity =
 
     };
 const generateData = async () => {
+    //console.log("Button Clicked");
 
     try {
+        //const response =
 
         await API.post(
             "/generate-data"
         );
+       // console.log(response.data);
 
         fetchRecords();
 

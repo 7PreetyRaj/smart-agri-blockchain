@@ -102,7 +102,41 @@ const savedData =
     }
 
 };
+// Generate and save sensor data
+const generateAndSaveSensorData = async (req, res) => {
+
+    try {
+
+        const sensorData = {
+
+            temperature:
+                Math.floor(Math.random() * 50),
+
+            humidity:
+                Math.floor(Math.random() * 100),
+
+            soilMoisture:
+                Math.floor(Math.random() * 100)
+
+        };
+
+        req.body = sensorData;
+
+        return submitSensorData(
+            req,
+            res
+        );
+
+    } catch (error) {
+
+        res.status(500).json({
+            message: error.message
+        });
+
+    }
+};
 module.exports = {
     getSensorData,
-    submitSensorData
+    submitSensorData,
+    generateAndSaveSensorData
 };

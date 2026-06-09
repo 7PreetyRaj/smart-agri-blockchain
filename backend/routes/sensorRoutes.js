@@ -4,9 +4,9 @@ const router = express.Router();
 
 const {
     getSensorData,
-    submitSensorData
+    submitSensorData,
+    generateAndSaveSensorData
 } = require("../controllers/sensorController");
-
 const {
     getBlockchainRecords
 } = require("../controllers/blockchainController");
@@ -17,7 +17,10 @@ router.get("/sensor-data", getSensorData);
 
 // Submit sensor data
 router.post("/sensor-data", submitSensorData);
-
+router.post(
+    "/generate-data",
+    generateAndSaveSensorData
+);
 // Get all blockchain records
 router.get(
     "/blockchain/records",

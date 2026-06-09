@@ -71,7 +71,25 @@ const avgHumidity =
                 `Record ${index + 1}`
         })
     );
-    const generateData = async () => {
+    
+
+
+
+    setRecords(
+    formattedData
+    );
+
+        } catch (error) {
+
+            console.error(
+                "Error fetching records:",
+                error
+            );
+
+        }
+
+    };
+const generateData = async () => {
 
     try {
 
@@ -87,24 +105,6 @@ const avgHumidity =
 
     }
 };
-
-
-
-            setRecords(
-    formattedData
-);
-
-        } catch (error) {
-
-            console.error(
-                "Error fetching records:",
-                error
-            );
-
-        }
-
-    };
-
     return (
 
         <div>

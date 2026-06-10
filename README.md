@@ -2,4 +2,3 @@
 
 AI + Blockchain based Agriculture Monitoring System
 
-M.Tech Final Year Project
